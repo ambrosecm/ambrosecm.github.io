@@ -3432,6 +3432,132 @@ figure.highlight .code-expand-btn svg {
   --highlight-green: #c3e88d;
   --highlight-blue: #82aaff;
 }
+.highlight {
+  position: relative;
+  margin: 20px 0;
+  padding: 30px 0 0;
+  font-size: 14px !important;
+  text-shadow: none;
+  border-radius: 4px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+.highlight .gutter {
+  width: 28px;
+  color: var(--highlight-gutter-color);
+  background-color: var(--highlight-gutter-bg-color);
+  text-align: center;
+  padding: 10px 4px !important;
+  user-select: none;
+  display: block;
+}
+.highlight .gutter pre {
+  border-radius: 0;
+}
+.highlight .code {
+  padding: 10px !important;
+  width: 100%;
+  overflow-x: auto;
+  color: var(--highlight-foreground);
+  background: var(--highlight-background);
+}
+.highlight pre {
+  font-size: 14px !important;
+  border: none;
+  white-space: pre;
+  margin: 0;
+  padding: 0;
+}
+.highlight table {
+  margin: 0;
+  width: 100%;
+  display: block;
+  overflow-y: auto;
+  /* table-layout: fixed; */
+}
+.highlight table::-webkit-scrollbar-thumb {
+  background: var(--highlight-scrollbar);
+}
+.highlight td {
+  border: none !important;
+  padding: 0 !important;
+}
+pre {
+  overflow: initial;
+  font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+}
+pre code {
+  font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+  background: none;
+  text-shadow: none;
+  padding: 0;
+}
+pre .addition {
+  color: var(--highlight-addition) !important;
+}
+pre .deletion {
+  color: var(--highlight-deletion) !important;
+}
+pre .comment {
+  color: var(--highlight-comment);
+}
+pre .attr,
+pre .property,
+pre .tag .attr,
+pre .javascript .function {
+  color: var(--highlight-purple) !important;
+}
+pre .tag,
+pre .title,
+pre .keyword,
+pre .css .hexcolor {
+  color: var(--highlight-aqua) !important;
+}
+pre .variable,
+pre .attribute,
+pre .regexp,
+pre .ruby .constant,
+pre .xml .tag .title,
+pre .xml .pi,
+pre .xml .doctype,
+pre .html .doctype,
+pre .css .id,
+pre .tag .name,
+pre .css .class,
+pre .css .pseudo {
+  color: var(--highlight-red) !important;
+}
+pre .number,
+pre .preprocessor,
+pre .literal,
+pre .params,
+pre .constant {
+  color: var(--highlight-orange) !important;
+}
+pre .built_in {
+  color: var(--highlight-yellow) !important;
+}
+pre .class,
+pre .ruby .class .title,
+pre .css .rules .attribute,
+pre .string,
+pre .value,
+pre .inheritance,
+pre .header,
+pre .ruby .symbol,
+pre .xml .cdata {
+  color: var(--highlight-green) !important;
+}
+pre .function,
+pre .python .decorator,
+pre .python .title,
+pre .ruby .function .title,
+pre .ruby .title .keyword,
+pre .perl .sub,
+pre .javascript .title,
+pre .coffeescript .title {
+  color: var(--highlight-blue) !important;
+}
 pre[class*="language-"] code[class*="language-"] {
   font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
   padding: 10px;

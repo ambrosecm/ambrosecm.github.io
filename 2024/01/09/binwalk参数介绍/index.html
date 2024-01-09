@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="binwalk参数介绍基本指令文件提取您可以告诉binwalk使用以下-e选项提取它在固件映像中找到的任何文件： 1$ binwalk -e firmware.bin  如果您还指定了-M选项，Binwalk甚至会在提取文件时递归扫描文件： 1$ binwalk -Me firmware.bin  如果-r指定了该选项，则将自动删除任何无法提取的文件签名 - 或导致0大小文件的文件签名： 1$ b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="binwalk参数介绍">
+<meta property="og:url" content="https://ambrosecm.github.io/2024/01/09/binwalk%E5%8F%82%E6%95%B0%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="Ambrose&#39;Blog">
+<meta property="og:description" content="binwalk参数介绍基本指令文件提取您可以告诉binwalk使用以下-e选项提取它在固件映像中找到的任何文件： 1$ binwalk -e firmware.bin  如果您还指定了-M选项，Binwalk甚至会在提取文件时递归扫描文件： 1$ binwalk -Me firmware.bin  如果-r指定了该选项，则将自动删除任何无法提取的文件签名 - 或导致0大小文件的文件签名： 1$ b">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-01-09T07:22:32.000Z">
+<meta property="article:modified_time" content="2024-01-09T07:24:22.150Z">
+<meta property="article:author" content="Ambrose">
+<meta property="article:tag" content="binwalk">
+<meta name="twitter:card" content="summary">
+
+    <meta name="keywords" content="binwalk">
+
+
+<title >binwalk参数介绍</title>
+
+<!-- Favicon -->
+
+    <link href='/img/avatar16.jpg?v=2.1.8' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/img/avatar32.jpg?v=2.1.8' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/img/avatar16.jpg?v=2.1.8' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://npm.elemecdn.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"ambrosecm.github.io","author":"Ambrose","root":"/","typed_text":["I won't swerve, I won't veer."],"theme_version":"2.1.8","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/avatar32.jpg","icon16":"/img/avatar16.jpg","icon32":"/img/avatar32.jpg","appleTouchIcon":"/img/avatar16.jpg","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"/img/avatar16.jpg","showText":"(\\≧▽≦/)","hideText":"(●—●)"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://npm.elemecdn.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-01-09 15:24:22"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.8" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+	<div class="loader">
+		<div class="inner one"></div>
+		<div class="inner two"></div>
+		<div class="inner three"></div>
+	</div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/avatar32.jpg">
+    
+    
+        <div class="trm-logo-text">
+            Ambrose&#39;<span>Blog</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/archives/" target="">
+                    归档
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a data-no-swup href="/categories/" target="">
+                            分类
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a data-no-swup href="/tags/" target="">
+                            标签
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/gallery/" target="">
+                    图库
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/background.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Some words
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            binwalk参数介绍
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/avatar1.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Ambrose
+    </h5>
+    
+        <div class="trm-label">
+            
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                RESIDENCE:
+            </div>
+            <div class="trm-label trm-label-light">
+                earth
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                City:
+            </div>
+            <div class="trm-label trm-label-light">
+                SHANDONG
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:3021572573@qq.com" class="trm-btn">
+            Contact me
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            01/09
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            15:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Ambrose
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="binwalk参数介绍"><a href="#binwalk参数介绍" class="headerlink" title="binwalk参数介绍"></a>binwalk参数介绍</h1><h3 id="基本指令"><a href="#基本指令" class="headerlink" title="基本指令"></a>基本指令</h3><p>文件提取<br>您可以告诉binwalk使用以下-e选项提取它在固件映像中找到的任何文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -e firmware.bin</span><br></pre></td></tr></table></figure>
+
+<p>如果您还指定了-M选项，Binwalk甚至会在提取文件时递归扫描文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -Me firmware.bin</span><br></pre></td></tr></table></figure>
+
+<p>如果-r指定了该选项，则将自动删除任何无法提取的文件签名 - 或导致0大小文件的文件签名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -Mre firmware.bin</span><br></pre></td></tr></table></figure>
+
+<p>要提取一个特定的签名类型，请指定一个或多个-D类型选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -D <span class="string">&#x27; png图片：PNG &#x27;</span>的firmware.bin</span><br></pre></td></tr></table></figure>
+
+<p>熵分析有助于识别固件映像中有趣的数据部分：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -E firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="显示binwalk帮助输出-h-–help"><a href="#显示binwalk帮助输出-h-–help" class="headerlink" title="显示binwalk帮助输出(&#96;-h, –help)"></a><strong><strong>显示binwalk帮助输出(&#96;-h, –help)</strong></strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="扫描固件"><a href="#扫描固件" class="headerlink" title="扫描固件"></a><strong><strong>扫描固件</strong></strong></h3><p><code>binwalk</code>的主要功能 - 也是迄今为止最受欢迎的功能。 <code>Binwalk</code>可以扫描许多不同嵌入式文件类型和文件系统的固件映像，只需给它一个要扫描的文件列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk firmware.bin</span><br><span class="line"></span><br><span class="line">DECIMAL       HEX         DESCRIPTION</span><br><span class="line">-------------------------------------------------------------------------------------------------------------------</span><br><span class="line">0             0x0         DLOB firmware header, boot partition: <span class="string">&quot;dev=/dev/mtdblock/2&quot;</span></span><br><span class="line">112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432 bytes, uncompressed size: 3797616 bytes</span><br><span class="line">1310832       0x140070    PackImg section delimiter tag, little endian size: 13644032 bytes; big endian size: 3264512 bytes</span><br><span class="line">1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma, size: 3264162 bytes,  1866 inodes, blocksize: 65536 bytes, created: Tue Apr  3 04:12:22 2012</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件提取-e-extract"><a href="#文件提取-e-extract" class="headerlink" title="**文件提取( -e,--extract)"></a>**<strong>文件提取( <code>-e,--extract</code>)</strong></h3><p>这个功能也是一个常用的功能，在CTF中很多文件分解的 <code>misc题</code>都可以使用 <code>binwalk</code>提高效率相对于使用 <code>winhex</code>这类工具。 可以使用 <code>-e</code>选项提取它在固件映像中找到的任何文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -e firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="签名分析-B-signature"><a href="#签名分析-B-signature" class="headerlink" title="**签名分析( -B,--signature)"></a>**<strong>签名分析( <code>-B,--signature</code>)</strong></h3><p>对目标文件执行签名分析，如果未指定其他分析选项，则这是默认值。 如果希望将签名分析与其他分析器（例如 - 熵）结合使用，请使用此选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --signature firmware.bin</span><br><span class="line"></span><br><span class="line">DECIMAL       HEX         DESCRIPTION</span><br><span class="line">-------------------------------------------------------------------------------------------------------------------</span><br><span class="line">0             0x0         DLOB firmware header, boot partition: <span class="string">&quot;dev=/dev/mtdblock/2&quot;</span></span><br><span class="line">112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432 bytes, uncompressed size: 3797616 bytes</span><br><span class="line">1310832       0x140070    PackImg section delimiter tag, little endian size: 13644032 bytes; big endian size: 3264512 bytes</span><br><span class="line">1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma, size: 3264162 bytes,  1866 inodes, blocksize: 65536 bytes, created: Tue Apr  3 04:12:22 2012</span><br></pre></td></tr></table></figure>
+
+<h3 id="熵分析-E-entropy"><a href="#熵分析-E-entropy" class="headerlink" title="**熵分析( -E,--entropy)"></a>**<strong>熵分析( <code>-E,--entropy</code>)</strong></h3><p>对输入文件执行熵分析，打印原始熵数据并生成熵图。 熵分析可以与–signature，– raw或–opcodes结合使用，以便更好地理解目标文件。 用于识别签名扫描可能遗漏的有趣数据部分：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -E firmware.bin</span><br><span class="line">DECIMAL       HEXADECIMAL     ENTROPY</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">0             0x0             Rising entropy edge (0.983751)</span><br><span class="line">1155072       0x11A000        Falling entropy edge (0.000000)</span><br><span class="line">1181696       0x120800        Rising entropy edge (0.990546)</span><br><span class="line">3780608       0x39B000        Falling entropy edge (0.000000)</span><br></pre></td></tr></table></figure>
+
+<p>与–verbose选项结合使用时，将打印为每个数据块计算的原始熵：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -E --verbose firmware.bin</span><br><span class="line"></span><br><span class="line">DECIMAL         HEX             ENTROPY ANALYSIS</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">0               0x0             0.964914</span><br><span class="line">1024            0x400           0.978591</span><br><span class="line">2048            0x800           0.973048</span><br><span class="line">3072            0xC00           0.976195</span><br><span class="line">4096            0x1000          0.976072</span><br><span class="line">5120            0x1400          0.976734</span><br><span class="line">6144            0x1800          0.976861</span><br><span class="line">7168            0x1C00          0.972385</span><br><span class="line">8192            0x2000          0.972518</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 如果是使用 <code>python API</code>调用熵分析，需要禁用图形（–nplot）以防止脚本过早退出。</p>
+<h3 id="保存熵图为PNG文件并不显示-J-save"><a href="#保存熵图为PNG文件并不显示-J-save" class="headerlink" title="**保存熵图为PNG文件并不显示( -J,--save)"></a>**<strong>保存熵图为PNG文件并不显示( <code>-J,--save</code>)</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --save -E firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="搜索字符串-R，-raw"><a href="#搜索字符串-R，-raw" class="headerlink" title="**搜索字符串( -R，--raw=&lt;string&gt;)"></a>**<strong>搜索字符串( <code>-R，--raw=&lt;string&gt;</code>)</strong></h3><p>搜索字符串包括转义的八进制和&#x2F;或十六进制值。 需要搜索自定义的原始字节序列时，可以使用此选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -R <span class="string">&quot;\x00\x01\x02\x03\x04&quot;</span> firmware.bin</span><br><span class="line"></span><br><span class="line">DECIMAL       HEX         DESCRIPTION</span><br><span class="line">-------------------------------------------------------------------------------------------------------------------</span><br><span class="line">377654        0x5C336     Raw string signature</span><br></pre></td></tr></table></figure>
+
+<h3 id="搜索各种CPU架构常见的可执行操作码-A-opcodes"><a href="#搜索各种CPU架构常见的可执行操作码-A-opcodes" class="headerlink" title="**搜索各种CPU架构常见的可执行操作码( -A,--opcodes)"></a>**<strong>搜索各种CPU架构常见的可执行操作码( <code>-A,--opcodes</code>)</strong></h3><p><code>binwalk</code>可以在指定文件中搜索各种CPU架构常见的可执行操作码。<strong>注：</strong> 某些操作码签名很短，因此容易产生误报结果。 当需要在文件中找到可执行代码时，如果需要确定可执行文件的体系结构时，可以使用此选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -A firmware.bin</span><br><span class="line"></span><br><span class="line">DECIMAL         HEX             DESCRIPTION</span><br><span class="line">-------------------------------------------------------------------------------------------------------------------</span><br><span class="line">268             0x10C           MIPS instructions, <span class="keyword">function</span> prologue</span><br><span class="line">412             0x19C           MIPS instructions, <span class="keyword">function</span> prologue</span><br><span class="line">636             0x27C           MIPS instructions, <span class="keyword">function</span> prologue</span><br><span class="line">812             0x32C           MIPS instructions, <span class="keyword">function</span> epilogue</span><br><span class="line">920             0x398           MIPS instructions, <span class="keyword">function</span> epilogue</span><br><span class="line">948             0x3B4           MIPS instructions, <span class="keyword">function</span> prologue</span><br><span class="line">1056            0x420           MIPS instructions, <span class="keyword">function</span> epilogue</span><br><span class="line">1080            0x438           MIPS instructions, <span class="keyword">function</span> prologue</span><br><span class="line">1356            0x54C           MIPS instructions, <span class="keyword">function</span> epilogue</span><br><span class="line">1392            0x570           MIPS instructions, <span class="keyword">function</span> prologue</span><br><span class="line">1836            0x72C           MIPS instructions, <span class="keyword">function</span> epilogue</span><br><span class="line">2012            0x7DC           MIPS instructions, <span class="keyword">function</span> prologue</span><br><span class="line">2260            0x8D4           MIPS instructions, <span class="keyword">function</span> epilogue</span><br><span class="line">2512            0x9D0           MIPS instructions, <span class="keyword">function</span> prologue</span><br><span class="line">2552            0x9F8           MIPS instructions, <span class="keyword">function</span> epilogue</span><br></pre></td></tr></table></figure>
+
+<h3 id="搜索签名的自定义魔术签名文件-m，-magic"><a href="#搜索签名的自定义魔术签名文件-m，-magic" class="headerlink" title="**搜索签名的自定义魔术签名文件( -m，--magic=&lt;file&gt;)"></a>**<strong>搜索签名的自定义魔术签名文件( <code>-m，--magic=&lt;file&gt;</code>)</strong></h3><p>加载备用魔术签名文件而不是默认文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -m ./foobar.mgc firmware.bin</span><br><span class="line"></span><br><span class="line">DECIMAL         HEX             DESCRIPTION</span><br><span class="line">-------------------------------------------------------------------------------------------------------------------</span><br><span class="line">268             0x10C           Foobar</span><br><span class="line">412             0x19C           Foobar</span><br><span class="line">636             0x27C           Foobar</span><br></pre></td></tr></table></figure>
+
+<h3 id="禁用“智能”签名匹配-b-dumb"><a href="#禁用“智能”签名匹配-b-dumb" class="headerlink" title="**禁用“智能”签名匹配( -b,--dumb)"></a>**<strong>禁用“智能”签名匹配( <code>-b,--dumb</code>)</strong></h3><p>智能签名匹配可能导致错过其他有效签名时（例如，通过jump-to-offset关键字），可以使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -b firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="显示所有包括误标记为无效结果-I-invalid"><a href="#显示所有包括误标记为无效结果-I-invalid" class="headerlink" title="显示所有包括误标记为无效结果( I,--invalid)"></a><strong>显示所有包括误标记为无效结果( <code>I,--invalid</code>)</strong></h3><p>binwalk将有效结果误标记为无效结果，并产生大量垃圾输出，可以使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -I firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="签名排除过滤器-x，-exclude"><a href="#签名排除过滤器-x，-exclude" class="headerlink" title="签名排除过滤器( x，--exclude=&lt;filter&gt;)"></a><strong>签名排除过滤器( <code>x，--exclude=&lt;filter&gt;</code>)</strong></h3><p>不过滤被过滤器匹配的签名，过滤器是小写的正则表达式; 可以指定多个过滤器。第一行与指定过滤器匹配的魔术签名根本不会被加载; 因此，使用此过滤器可以帮助减少签名扫描时间。用于排除不需要或不感兴趣的结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -x <span class="string">&#x27;mach-o&#x27;</span> -x <span class="string">&#x27;^hp&#x27;</span> firmware.bin <span class="comment"># exclude HP calculator and OSX mach-o signatures</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="签名过滤器-y，-include"><a href="#签名过滤器-y，-include" class="headerlink" title="签名过滤器( y，--include=&lt;filter&gt;)"></a><strong>签名过滤器( <code>y，--include=&lt;filter&gt;</code>)</strong></h3><p>过滤被过滤器匹配的签名，过滤器是小写的正则表达式; 可以指定多个过滤器。只会加载第一行与指定过滤器匹配的魔术签名; 因此，使用此过滤器可以帮助减少签名扫描时间。仅搜索特定签名或签名类型时很有用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -y <span class="string">&#x27;filesystem&#x27;</span> firmware.bin <span class="comment"># only search for filesystem signatures</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="识别反汇编代码的CPU体系结构-Y，-disasm"><a href="#识别反汇编代码的CPU体系结构-Y，-disasm" class="headerlink" title="识别反汇编代码的CPU体系结构( Y，--disasm)"></a><strong>识别反汇编代码的CPU体系结构( <code>Y，--disasm</code>)</strong></h3><p>使用 <code>capstone</code>反汇编程序识别文件中包含的可执行代码的CPU体系结构。 使用此扫描指定 <code>--verbose</code>将另外打印反汇编的指令。 通常比 <code>--opcodes</code>执行的简单签名分析更健壮，但支持更少的体系结构：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --disasm firmware.bin</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">428           0x1AC           MIPS executable code, 32/64-bit, little endian, at least 750 valid instructions</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置反汇编结果的最小连续指令数-T-minsn"><a href="#设置反汇编结果的最小连续指令数-T-minsn" class="headerlink" title="设置反汇编结果的最小连续指令数( T,--minsn)"></a><strong>设置反汇编结果的最小连续指令数( <code>T,--minsn</code>)</strong></h3><p>将–disasm结果的最小连续指令数设置为有效。默认值为500条指令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --minsn=1200 -Y firmware.bin</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">428           0x1AC           MIPS executable code, 32/64-bit, little endian, at least 1250 valid instructions</span><br></pre></td></tr></table></figure>
+
+<h3 id="反汇编结果连续执行-k-continue"><a href="#反汇编结果连续执行-k-continue" class="headerlink" title="反汇编结果连续执行( k,--continue)"></a><strong>反汇编结果连续执行( <code>k,--continue</code>)</strong></h3><p>指示 - disasm不会停在第一个结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --<span class="built_in">continue</span> -Y firmware.bin</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">428           0x1AC           MIPS executable code, 32/64-bit, little endian, at least 1250 valid instructions</span><br><span class="line">1048576       0x100000        MIPS executable code, 32/64-bit, little endian, at least 1250 valid instructions</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="忽略–entropy生成的熵图中的图例-Q，-nngend"><a href="#忽略–entropy生成的熵图中的图例-Q，-nngend" class="headerlink" title="忽略–entropy生成的熵图中的图例( Q，--nngend)"></a><strong>忽略–entropy生成的熵图中的图例( <code>Q，--nngend</code>)</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --entropy -Q firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="禁止对图形熵地块–entropy扫描-N，-nplot"><a href="#禁止对图形熵地块–entropy扫描-N，-nplot" class="headerlink" title="禁止对图形熵地块–entropy扫描( N，--nplot)"></a><strong>禁止对图形熵地块–entropy扫描( <code>N，--nplot</code>)</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --entropy -N firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置上升沿熵触发电平-H，-high"><a href="#设置上升沿熵触发电平-H，-high" class="headerlink" title="设置上升沿熵触发电平( H，--high=&lt;float&gt;)"></a><strong>设置上升沿熵触发电平( <code>H，--high=&lt;float&gt;</code>)</strong></h3><p>仅在与–entropy一起使用时有效。指定的值应介于0和1之间：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --entropy -H .9 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置下降沿熵触发电平-L，-low"><a href="#设置下降沿熵触发电平-L，-low" class="headerlink" title="设置下降沿熵触发电平( L，--low=&lt;float&gt;)"></a><strong>设置下降沿熵触发电平( <code>L，--low=&lt;float&gt;</code>)</strong></h3><p>仅在与–entropy一起使用时有效。指定的值应介于0和1之间：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --entropy -L .3 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="十六进制字节彩色输出-W，-hexdump"><a href="#十六进制字节彩色输出-W，-hexdump" class="headerlink" title="十六进制字节彩色输出( W，--hexdump)"></a><strong>十六进制字节彩色输出( <code>W，--hexdump</code>)</strong></h3><p>绿色 - 所有文件中的这些字节都相同 红色 - 这些字节在所有文件中都不同 蓝色 - 这些字节在某些文件中只有不同 可以任意数量的任意文件; 其他有用的选项是–block， - offset， - length和–terse：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -W --block = 8 --length = 64 firmware1.bin firmware2.bin firmware3.bin</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 如果您需要页面输出安装most实用程序，因为它更好地支持彩色输出的分页。 仅在–hexdump期间显示包含 <code>绿色</code>字节的行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -W --green firmware1.bin firmware2.bin firmware3.bin</span><br></pre></td></tr></table></figure>
+
+<p>仅在–hexdump期间显示包含 <code>红色</code>字节的行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -W --red firmware1.bin firmware2.bin firmware3.bin</span><br></pre></td></tr></table></figure>
+
+<p>仅在–hexdump期间显示包含 <code>蓝色</code>字节的行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -W --blue firmware1.bin firmware2.bin firmware3.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="提取签名扫描期间识别的文件-D-dd"><a href="#提取签名扫描期间识别的文件-D-dd" class="headerlink" title="提取签名扫描期间识别的文件( D,--dd=&lt;type[:ext[:cmd]]&gt;)"></a><strong>提取签名扫描期间识别的文件( <code>D,--dd=&lt;type[:ext[:cmd]]&gt;</code>)</strong></h3><p>提取 - 签名扫描期间识别的文件。可以指定多个–dd选项。 type是签名描述中包含的小写字符串（支持正则表达式） ext是保存数据磁盘时使用的文件扩展名（默认为none） cmd是在将数据保存到磁盘后执行的可选命令 默认情况下，文件名是找到签名的十六进制偏移量，除非在签名本身中指定了备用文件名。 以下示例演示如何使用–dd选项指定提取规则，该选项将提取包含文件扩展名为“zip”的字符串“zip archive”的任何签名，然后执行“unzip”命令。此外，PNG图像按原样提取，带有’png’文件扩展名。 请注意使用’％e’占位符。执行unzip命令时，此占位符将替换为解压缩文件的相对路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -D <span class="string">&#x27;zip archive:zip:unzip %e&#x27;</span> -D <span class="string">&#x27;png image:png&#x27;</span> firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="签名扫描期间递归扫描提取的文件-M-matryoshka"><a href="#签名扫描期间递归扫描提取的文件-M-matryoshka" class="headerlink" title="签名扫描期间递归扫描提取的文件( M,--matryoshka)"></a><strong>签名扫描期间递归扫描提取的文件( <code>M,--matryoshka</code>)</strong></h3><p>只有有效使用时–extract或–dd。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -e -M firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置提取数据的输出目录-C-directory"><a href="#设置提取数据的输出目录-C-directory" class="headerlink" title="设置提取数据的输出目录( C,--directory=&lt;str&gt;)"></a><strong>设置提取数据的输出目录( <code>C,--directory=&lt;str&gt;</code>)</strong></h3><p>默认值：当前工作目录 仅适用与使用时–extract或–dd选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -e --directory = / tmp firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="限制–matryoshka递归深度-d-depth"><a href="#限制–matryoshka递归深度-d-depth" class="headerlink" title="限制–matryoshka递归深度( d,--depth=&lt;int&gt;)"></a><strong>限制–matryoshka递归深度( <code>d,--depth=&lt;int&gt;</code>)</strong></h3><p>限制–matryoshka递归深度。默认情况下，深度设置为8。 仅在与–matryoshka选项一起使用时才适用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -Me -d 5 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="限制从目标文件中分割出的数据大小-j-size"><a href="#限制从目标文件中分割出的数据大小-j-size" class="headerlink" title="限制从目标文件中分割出的数据大小( j,--size=&lt;int&gt;)"></a><strong>限制从目标文件中分割出的数据大小( <code>j,--size=&lt;int&gt;</code>)</strong></h3><p>默认情况下，没有大小限制。 只有有效使用时–extract或–dd。 请注意，此选项不限制外部提取实用程序提取&#x2F;解压缩的数据大小。 从具有有限磁盘空间的大型文件中雕刻或提取数据时非常有用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -e --size=0x100000 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="清除无法处理的零文件和文件-r-rm"><a href="#清除无法处理的零文件和文件-r-rm" class="headerlink" title="清除无法处理的零文件和文件( r,--rm)"></a><strong>清除无法处理的零文件和文件( <code>r,--rm</code>)</strong></h3><p>只有有效使用时–extract或–dd。 用于清除在提取期间从目标文件复制的误报文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -e -r firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="刻录数据但不自动提取-解压缩该数据-z-carve"><a href="#刻录数据但不自动提取-解压缩该数据-z-carve" class="headerlink" title="刻录数据但不自动提取&#x2F;解压缩该数据( z,--carve)"></a><strong>刻录数据但不自动提取&#x2F;解压缩该数据( <code>z,--carve</code>)</strong></h3><p>只有有效使用时–extract或–dd。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -e --carve firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="暴力识别原始deflate压缩数据流-X-deflate"><a href="#暴力识别原始deflate压缩数据流-X-deflate" class="headerlink" title="暴力识别原始deflate压缩数据流( X,--deflate)"></a><strong>暴力识别原始deflate压缩数据流( <code>X,--deflate</code>)</strong></h3><p>用于从具有损坏&#x2F;修改&#x2F;缺少标头的文件中恢复数据。可以与–lzma结合使用。 此扫描可能很慢，因此使用–offset和&#x2F;或–length限制扫描区域非常有用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --deflate -o 0x100 -l 10000 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="暴力识别原始LZMA压缩数据流-Z-lzma"><a href="#暴力识别原始LZMA压缩数据流-Z-lzma" class="headerlink" title="暴力识别原始LZMA压缩数据流( Z,--lzma)"></a><strong>暴力识别原始LZMA压缩数据流( <code>Z,--lzma</code>)</strong></h3><p>用于从具有损坏&#x2F;修改&#x2F;缺少标头的文件中恢复数据。可以与–deflate结合使用。 由于LZMA压缩选项的数量不同，此扫描可能非常慢，因此使用–offset和&#x2F;或–length限制扫描区域非常有用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --lzma -o 0x100 -l 10000 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="常见压缩选项搜索压缩流-P-partial"><a href="#常见压缩选项搜索压缩流-P-partial" class="headerlink" title="常见压缩选项搜索压缩流( P,--partial)"></a><strong>常见压缩选项搜索压缩流( <code>P,--partial</code>)</strong></h3><p>可以显着提高–lzma扫描的速度：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --partial -Z -o 0x100 -l 10000 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="在扫描到第一个结果停止-S-stop"><a href="#在扫描到第一个结果停止-S-stop" class="headerlink" title="在扫描到第一个结果停止( S,--stop)"></a><strong>在扫描到第一个结果停止( <code>S,--stop</code>)</strong></h3><p>与–lzma和&#x2F;或–deflate选项一起使用时，这将在显示第一个结果后停止扫描：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --stop -Z firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置目标文件中要分析的字节数-l-length"><a href="#设置目标文件中要分析的字节数-l-length" class="headerlink" title="设置目标文件中要分析的字节数( l,--length=&lt;int&gt;)"></a><strong>设置目标文件中要分析的字节数( <code>l,--length=&lt;int&gt;</code>)</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --length=0x100 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置起始偏移量-o-offset"><a href="#设置起始偏移量-o-offset" class="headerlink" title="设置起始偏移量( o,--offset=&lt;int&gt;)"></a><strong>设置起始偏移量( <code>o,--offset=&lt;int&gt;</code>)</strong></h3><p>设置开始分析目标文件的起始偏移量。还可以指定负偏移（距文件结束的距离）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --offset=0x100 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置所有打印偏移的基址-O-base"><a href="#设置所有打印偏移的基址-O-base" class="headerlink" title="设置所有打印偏移的基址( O,--base=&lt;int&gt;)"></a><strong>设置所有打印偏移的基址( <code>O,--base=&lt;int&gt;</code>)</strong></h3><p>此值将添加到所有打印结果的原始文件偏移量中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --base=0x80001000 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置分析期间使用的块大小-K-block"><a href="#设置分析期间使用的块大小-K-block" class="headerlink" title="设置分析期间使用的块大小( K,--block=&lt;int&gt;)"></a><strong>设置分析期间使用的块大小( <code>K,--block=&lt;int&gt;</code>)</strong></h3><p>设置分析期间使用的块大小（以字节为单位）。 与 - 熵一起使用时，这决定了在熵分析期间分析的每个块的大小。 与–hexdump一起使用时，它设置十六进制输出中每行显示的字节数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --diff -K 8 firmware1.bin firmware2.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="扫描之前反转n个字节-g-swap"><a href="#扫描之前反转n个字节-g-swap" class="headerlink" title="扫描之前反转n个字节( g,--swap=&lt;int&gt;)"></a><strong>扫描之前反转n个字节( <code>g,--swap=&lt;int&gt;</code>)</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --swap=2 firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="扫描结果记录到指定的文件-f-log"><a href="#扫描结果记录到指定的文件-f-log" class="headerlink" title="扫描结果记录到指定的文件( f,--log=&lt;file&gt;)"></a><strong>扫描结果记录到指定的文件( <code>f,--log=&lt;file&gt;</code>)</strong></h3><p>除非指定了–csv，否则保存到日志文件的数据将与终端中显示的数据相同。 即使指定了–quiet，数据也将保存到日志文件中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --<span class="built_in">log</span>=binwalk.log firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="日志数据以CSV格式保存-c-csv"><a href="#日志数据以CSV格式保存-c-csv" class="headerlink" title="日志数据以CSV格式保存( c,--csv)"></a><strong><a target="_blank" rel="noopener" href="https://cloud.tencent.com/solution/cloudlog?from=10680">日志数据</a>以CSV格式保存( <code>c,--csv</code>)</strong></h3><p>如果与–cast或–hexdump一起使用，则忽略此选项。 仅在与–log选项结合使用时才有效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --<span class="built_in">log</span>=binwalk.log --csv firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="格式输出适应终端窗口宽度-t-term"><a href="#格式输出适应终端窗口宽度-t-term" class="headerlink" title="格式输出适应终端窗口宽度( t,--term)"></a><strong>格式输出适应终端窗口宽度( <code>t,--term</code>)</strong></h3><p>使输出更具可读性:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --term firmware.bin</span><br><span class="line"></span><br><span class="line">DECIMAL       HEX         DESCRIPTION</span><br><span class="line">-------------------------------------------------------------------------------------------------------</span><br><span class="line">0             0x0         DLOB firmware header, boot partition: <span class="string">&quot;dev=/dev/mtdblock/2&quot;</span></span><br><span class="line">112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432</span><br><span class="line">                        bytes, uncompressed size: 3805904 bytes</span><br><span class="line">1310832       0x140070    PackImg section delimiter tag, little endian size: 15741184 bytes; big</span><br><span class="line">                        endian size: 3272704 bytes</span><br><span class="line">1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma,</span><br><span class="line">                        size: 3268870 bytes,  1860 inodes, blocksize: 65536 bytes, created:</span><br><span class="line">                        Mon Apr 22 04:56:42 2013</span><br></pre></td></tr></table></figure>
+
+<h3 id="禁用输出到stdout-q-quiet"><a href="#禁用输出到stdout-q-quiet" class="headerlink" title="禁用输出到stdout( q,--quiet)"></a><strong>禁用输出到stdout( <code>q,--quiet</code>)</strong></h3><p>与–log或verbose扫描一起使用时最方便，例如–entropy：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --quiet -f binwalk.log firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="启用详细输出，包括目标文件MD5和扫描时间戳-v-verbose"><a href="#启用详细输出，包括目标文件MD5和扫描时间戳-v-verbose" class="headerlink" title="启用详细输出，包括目标文件MD5和扫描时间戳( v,--verbose)"></a><strong>启用详细输出，包括目标文件MD5和扫描时间戳( <code>v,--verbose</code>)</strong></h3><p>如果指定了两次，如果还指定了–extract，则将显示外部提取实用程序的输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --verbose firmware.bin</span><br><span class="line"></span><br><span class="line">Scan Time:     2013-11-10 21:04:04</span><br><span class="line">Signatures:    265</span><br><span class="line">Target File:   firmware.bin</span><br><span class="line">MD5 Checksum:  6b91cdff1b4f0134b24b7041e079dd3e</span><br><span class="line"></span><br><span class="line">DECIMAL       HEX         DESCRIPTION</span><br><span class="line">-------------------------------------------------------------------------------------------------------------------</span><br><span class="line">0             0x0         DLOB firmware header, boot partition: <span class="string">&quot;dev=/dev/mtdblock/2&quot;</span></span><br><span class="line">112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432 bytes, uncompressed size: 3805904 bytes</span><br><span class="line">1310832       0x140070    PackImg section delimiter tag, little endian size: 15741184 bytes; big endian size: 3272704 bytes</span><br><span class="line">1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma, size: 3268870 bytes,  1860 inodes, blocksize: 65536 bytes, created: Mon Apr 22 04:56:42 2013</span><br></pre></td></tr></table></figure>
+
+<h3 id="扫描名称与给定正则表达式字符串匹配的文件-a-finclude"><a href="#扫描名称与给定正则表达式字符串匹配的文件-a-finclude" class="headerlink" title="扫描名称与给定正则表达式字符串匹配的文件( a,--finclude=&lt;str&gt;)"></a><strong>扫描名称与给定正则表达式字符串匹配的文件( <code>a,--finclude=&lt;str&gt;</code>)</strong></h3><p>当与组合–matryoshka和–extract</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -M -e --finclude=<span class="string">&#x27;\.bin$&#x27;</span> firmware.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="不要扫描名称与给定正则表达式字符串匹配的文件-p-fexclude"><a href="#不要扫描名称与给定正则表达式字符串匹配的文件-p-fexclude" class="headerlink" title="不要扫描名称与给定正则表达式字符串匹配的文件( p,--fexclude=&lt;str&gt;)"></a><strong>不要扫描名称与给定正则表达式字符串匹配的文件( <code>p,--fexclude=&lt;str&gt;</code>)</strong></h3><p>当与组合–matryoshka和–extract</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -M -e --fexclude=<span class="string">&#x27;\.pdf$&#x27;</span> firmware_archive.zip</span><br></pre></td></tr></table></figure>
+
+<h3 id="指定的端口号上启用状态服务器-s-status"><a href="#指定的端口号上启用状态服务器-s-status" class="headerlink" title="指定的端口号上启用状态服务器( s,--status=&lt;int&gt;)"></a><strong>指定的端口号上启用状态服务器( <code>s,--status=&lt;int&gt;</code>)</strong></h3><p>状态服务器仅侦听localhost并打印出与当前扫描状态相关的人类可读ASCII数据。您可以使用telnet，netcat等连接到它。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk --status=8080 firmware_archive.zip</span><br></pre></td></tr></table></figure>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2023/12/20/%E9%98%85%E8%AF%BB/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/avatar.jpg">
+                </span>
+                <h6 class="trm-op-title">阅读</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/12/20</li>
+                <li>14:24</li>
+                <li>阅读</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2024</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Ambrose</span>
+        </div>
+    
+
+      
+
+    
+        <div class="trm-footer-item">
+            博客已运行 <span id="since" class="trm-accent-color"></span> 天
+        </div>
+     
+
+     
+</footer>
+
+<script>
+    function show_date_time () {
+        var BirthDay = new Date("12/07/2023 00:00:00");
+        var today = new Date();
+        var timeold = (today.getTime() - BirthDay.getTime());
+        var msPerDay = 24 * 60 * 60 * 1000
+        var day = Math.floor(timeold / msPerDay)
+        since.innerHTML = day
+    }
+    show_date_time()
+</script>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="binwalk参数介绍"><a rel="nofollow" class="trm-toc-link" href="#binwalk参数介绍"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">binwalk参数介绍</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="基本指令"><a rel="nofollow" class="trm-toc-link" href="#基本指令"><span class="trm-toc-number">1.0.1.</span> <span class="trm-toc-text">基本指令</span></a></li><li class="trm-toc-item trm-toc-level-3" title="显示binwalk帮助输出(&#96;-h, –help)"><a rel="nofollow" class="trm-toc-link" href="#显示binwalk帮助输出-h-–help"><span class="trm-toc-number">1.0.2.</span> <span class="trm-toc-text">显示binwalk帮助输出(&#96;-h, –help)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="扫描固件"><a rel="nofollow" class="trm-toc-link" href="#扫描固件"><span class="trm-toc-number">1.0.3.</span> <span class="trm-toc-text">扫描固件</span></a></li><li class="trm-toc-item trm-toc-level-3" title="**文件提取( -e,--extract)"><a rel="nofollow" class="trm-toc-link" href="#文件提取-e-extract"><span class="trm-toc-number">1.0.4.</span> <span class="trm-toc-text">**文件提取( -e,--extract)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="**签名分析( -B,--signature)"><a rel="nofollow" class="trm-toc-link" href="#签名分析-B-signature"><span class="trm-toc-number">1.0.5.</span> <span class="trm-toc-text">**签名分析( -B,--signature)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="**熵分析( -E,--entropy)"><a rel="nofollow" class="trm-toc-link" href="#熵分析-E-entropy"><span class="trm-toc-number">1.0.6.</span> <span class="trm-toc-text">**熵分析( -E,--entropy)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="**保存熵图为PNG文件并不显示( -J,--save)"><a rel="nofollow" class="trm-toc-link" href="#保存熵图为PNG文件并不显示-J-save"><span class="trm-toc-number">1.0.7.</span> <span class="trm-toc-text">**保存熵图为PNG文件并不显示( -J,--save)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="**搜索字符串( -R，--raw&#x3D;&lt;string&gt;)"><a rel="nofollow" class="trm-toc-link" href="#搜索字符串-R，-raw"><span class="trm-toc-number">1.0.8.</span> <span class="trm-toc-text">**搜索字符串( -R，--raw&#x3D;&lt;string&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="**搜索各种CPU架构常见的可执行操作码( -A,--opcodes)"><a rel="nofollow" class="trm-toc-link" href="#搜索各种CPU架构常见的可执行操作码-A-opcodes"><span class="trm-toc-number">1.0.9.</span> <span class="trm-toc-text">**搜索各种CPU架构常见的可执行操作码( -A,--opcodes)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="**搜索签名的自定义魔术签名文件( -m，--magic&#x3D;&lt;file&gt;)"><a rel="nofollow" class="trm-toc-link" href="#搜索签名的自定义魔术签名文件-m，-magic"><span class="trm-toc-number">1.0.10.</span> <span class="trm-toc-text">**搜索签名的自定义魔术签名文件( -m，--magic&#x3D;&lt;file&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="**禁用“智能”签名匹配( -b,--dumb)"><a rel="nofollow" class="trm-toc-link" href="#禁用“智能”签名匹配-b-dumb"><span class="trm-toc-number">1.0.11.</span> <span class="trm-toc-text">**禁用“智能”签名匹配( -b,--dumb)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="显示所有包括误标记为无效结果( I,--invalid)"><a rel="nofollow" class="trm-toc-link" href="#显示所有包括误标记为无效结果-I-invalid"><span class="trm-toc-number">1.0.12.</span> <span class="trm-toc-text">显示所有包括误标记为无效结果( I,--invalid)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="签名排除过滤器( x，--exclude&#x3D;&lt;filter&gt;)"><a rel="nofollow" class="trm-toc-link" href="#签名排除过滤器-x，-exclude"><span class="trm-toc-number">1.0.13.</span> <span class="trm-toc-text">签名排除过滤器( x，--exclude&#x3D;&lt;filter&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="签名过滤器( y，--include&#x3D;&lt;filter&gt;)"><a rel="nofollow" class="trm-toc-link" href="#签名过滤器-y，-include"><span class="trm-toc-number">1.0.14.</span> <span class="trm-toc-text">签名过滤器( y，--include&#x3D;&lt;filter&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="识别反汇编代码的CPU体系结构( Y，--disasm)"><a rel="nofollow" class="trm-toc-link" href="#识别反汇编代码的CPU体系结构-Y，-disasm"><span class="trm-toc-number">1.0.15.</span> <span class="trm-toc-text">识别反汇编代码的CPU体系结构( Y，--disasm)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="设置反汇编结果的最小连续指令数( T,--minsn)"><a rel="nofollow" class="trm-toc-link" href="#设置反汇编结果的最小连续指令数-T-minsn"><span class="trm-toc-number">1.0.16.</span> <span class="trm-toc-text">设置反汇编结果的最小连续指令数( T,--minsn)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="反汇编结果连续执行( k,--continue)"><a rel="nofollow" class="trm-toc-link" href="#反汇编结果连续执行-k-continue"><span class="trm-toc-number">1.0.17.</span> <span class="trm-toc-text">反汇编结果连续执行( k,--continue)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="忽略–entropy生成的熵图中的图例( Q，--nngend)"><a rel="nofollow" class="trm-toc-link" href="#忽略–entropy生成的熵图中的图例-Q，-nngend"><span class="trm-toc-number">1.0.18.</span> <span class="trm-toc-text">忽略–entropy生成的熵图中的图例( Q，--nngend)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="禁止对图形熵地块–entropy扫描( N，--nplot)"><a rel="nofollow" class="trm-toc-link" href="#禁止对图形熵地块–entropy扫描-N，-nplot"><span class="trm-toc-number">1.0.19.</span> <span class="trm-toc-text">禁止对图形熵地块–entropy扫描( N，--nplot)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="设置上升沿熵触发电平( H，--high&#x3D;&lt;float&gt;)"><a rel="nofollow" class="trm-toc-link" href="#设置上升沿熵触发电平-H，-high"><span class="trm-toc-number">1.0.20.</span> <span class="trm-toc-text">设置上升沿熵触发电平( H，--high&#x3D;&lt;float&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="设置下降沿熵触发电平( L，--low&#x3D;&lt;float&gt;)"><a rel="nofollow" class="trm-toc-link" href="#设置下降沿熵触发电平-L，-low"><span class="trm-toc-number">1.0.21.</span> <span class="trm-toc-text">设置下降沿熵触发电平( L，--low&#x3D;&lt;float&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="十六进制字节彩色输出( W，--hexdump)"><a rel="nofollow" class="trm-toc-link" href="#十六进制字节彩色输出-W，-hexdump"><span class="trm-toc-number">1.0.22.</span> <span class="trm-toc-text">十六进制字节彩色输出( W，--hexdump)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="提取签名扫描期间识别的文件( D,--dd&#x3D;&lt;type[:ext[:cmd]]&gt;)"><a rel="nofollow" class="trm-toc-link" href="#提取签名扫描期间识别的文件-D-dd"><span class="trm-toc-number">1.0.23.</span> <span class="trm-toc-text">提取签名扫描期间识别的文件( D,--dd&#x3D;&lt;type[:ext[:cmd]]&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="签名扫描期间递归扫描提取的文件( M,--matryoshka)"><a rel="nofollow" class="trm-toc-link" href="#签名扫描期间递归扫描提取的文件-M-matryoshka"><span class="trm-toc-number">1.0.24.</span> <span class="trm-toc-text">签名扫描期间递归扫描提取的文件( M,--matryoshka)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="设置提取数据的输出目录( C,--directory&#x3D;&lt;str&gt;)"><a rel="nofollow" class="trm-toc-link" href="#设置提取数据的输出目录-C-directory"><span class="trm-toc-number">1.0.25.</span> <span class="trm-toc-text">设置提取数据的输出目录( C,--directory&#x3D;&lt;str&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="限制–matryoshka递归深度( d,--depth&#x3D;&lt;int&gt;)"><a rel="nofollow" class="trm-toc-link" href="#限制–matryoshka递归深度-d-depth"><span class="trm-toc-number">1.0.26.</span> <span class="trm-toc-text">限制–matryoshka递归深度( d,--depth&#x3D;&lt;int&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="限制从目标文件中分割出的数据大小( j,--size&#x3D;&lt;int&gt;)"><a rel="nofollow" class="trm-toc-link" href="#限制从目标文件中分割出的数据大小-j-size"><span class="trm-toc-number">1.0.27.</span> <span class="trm-toc-text">限制从目标文件中分割出的数据大小( j,--size&#x3D;&lt;int&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="清除无法处理的零文件和文件( r,--rm)"><a rel="nofollow" class="trm-toc-link" href="#清除无法处理的零文件和文件-r-rm"><span class="trm-toc-number">1.0.28.</span> <span class="trm-toc-text">清除无法处理的零文件和文件( r,--rm)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="刻录数据但不自动提取&#x2F;解压缩该数据( z,--carve)"><a rel="nofollow" class="trm-toc-link" href="#刻录数据但不自动提取-解压缩该数据-z-carve"><span class="trm-toc-number">1.0.29.</span> <span class="trm-toc-text">刻录数据但不自动提取&#x2F;解压缩该数据( z,--carve)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="暴力识别原始deflate压缩数据流( X,--deflate)"><a rel="nofollow" class="trm-toc-link" href="#暴力识别原始deflate压缩数据流-X-deflate"><span class="trm-toc-number">1.0.30.</span> <span class="trm-toc-text">暴力识别原始deflate压缩数据流( X,--deflate)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="暴力识别原始LZMA压缩数据流( Z,--lzma)"><a rel="nofollow" class="trm-toc-link" href="#暴力识别原始LZMA压缩数据流-Z-lzma"><span class="trm-toc-number">1.0.31.</span> <span class="trm-toc-text">暴力识别原始LZMA压缩数据流( Z,--lzma)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="常见压缩选项搜索压缩流( P,--partial)"><a rel="nofollow" class="trm-toc-link" href="#常见压缩选项搜索压缩流-P-partial"><span class="trm-toc-number">1.0.32.</span> <span class="trm-toc-text">常见压缩选项搜索压缩流( P,--partial)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="在扫描到第一个结果停止( S,--stop)"><a rel="nofollow" class="trm-toc-link" href="#在扫描到第一个结果停止-S-stop"><span class="trm-toc-number">1.0.33.</span> <span class="trm-toc-text">在扫描到第一个结果停止( S,--stop)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="设置目标文件中要分析的字节数( l,--length&#x3D;&lt;int&gt;)"><a rel="nofollow" class="trm-toc-link" href="#设置目标文件中要分析的字节数-l-length"><span class="trm-toc-number">1.0.34.</span> <span class="trm-toc-text">设置目标文件中要分析的字节数( l,--length&#x3D;&lt;int&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="设置起始偏移量( o,--offset&#x3D;&lt;int&gt;)"><a rel="nofollow" class="trm-toc-link" href="#设置起始偏移量-o-offset"><span class="trm-toc-number">1.0.35.</span> <span class="trm-toc-text">设置起始偏移量( o,--offset&#x3D;&lt;int&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="设置所有打印偏移的基址( O,--base&#x3D;&lt;int&gt;)"><a rel="nofollow" class="trm-toc-link" href="#设置所有打印偏移的基址-O-base"><span class="trm-toc-number">1.0.36.</span> <span class="trm-toc-text">设置所有打印偏移的基址( O,--base&#x3D;&lt;int&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="设置分析期间使用的块大小( K,--block&#x3D;&lt;int&gt;)"><a rel="nofollow" class="trm-toc-link" href="#设置分析期间使用的块大小-K-block"><span class="trm-toc-number">1.0.37.</span> <span class="trm-toc-text">设置分析期间使用的块大小( K,--block&#x3D;&lt;int&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="扫描之前反转n个字节( g,--swap&#x3D;&lt;int&gt;)"><a rel="nofollow" class="trm-toc-link" href="#扫描之前反转n个字节-g-swap"><span class="trm-toc-number">1.0.38.</span> <span class="trm-toc-text">扫描之前反转n个字节( g,--swap&#x3D;&lt;int&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="扫描结果记录到指定的文件( f,--log&#x3D;&lt;file&gt;)"><a rel="nofollow" class="trm-toc-link" href="#扫描结果记录到指定的文件-f-log"><span class="trm-toc-number">1.0.39.</span> <span class="trm-toc-text">扫描结果记录到指定的文件( f,--log&#x3D;&lt;file&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="日志数据以CSV格式保存( c,--csv)"><a rel="nofollow" class="trm-toc-link" href="#日志数据以CSV格式保存-c-csv"><span class="trm-toc-number">1.0.40.</span> <span class="trm-toc-text">日志数据以CSV格式保存( c,--csv)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="格式输出适应终端窗口宽度( t,--term)"><a rel="nofollow" class="trm-toc-link" href="#格式输出适应终端窗口宽度-t-term"><span class="trm-toc-number">1.0.41.</span> <span class="trm-toc-text">格式输出适应终端窗口宽度( t,--term)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="禁用输出到stdout( q,--quiet)"><a rel="nofollow" class="trm-toc-link" href="#禁用输出到stdout-q-quiet"><span class="trm-toc-number">1.0.42.</span> <span class="trm-toc-text">禁用输出到stdout( q,--quiet)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="启用详细输出，包括目标文件MD5和扫描时间戳( v,--verbose)"><a rel="nofollow" class="trm-toc-link" href="#启用详细输出，包括目标文件MD5和扫描时间戳-v-verbose"><span class="trm-toc-number">1.0.43.</span> <span class="trm-toc-text">启用详细输出，包括目标文件MD5和扫描时间戳( v,--verbose)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="扫描名称与给定正则表达式字符串匹配的文件( a,--finclude&#x3D;&lt;str&gt;)"><a rel="nofollow" class="trm-toc-link" href="#扫描名称与给定正则表达式字符串匹配的文件-a-finclude"><span class="trm-toc-number">1.0.44.</span> <span class="trm-toc-text">扫描名称与给定正则表达式字符串匹配的文件( a,--finclude&#x3D;&lt;str&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="不要扫描名称与给定正则表达式字符串匹配的文件( p,--fexclude&#x3D;&lt;str&gt;)"><a rel="nofollow" class="trm-toc-link" href="#不要扫描名称与给定正则表达式字符串匹配的文件-p-fexclude"><span class="trm-toc-number">1.0.45.</span> <span class="trm-toc-text">不要扫描名称与给定正则表达式字符串匹配的文件( p,--fexclude&#x3D;&lt;str&gt;)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="指定的端口号上启用状态服务器( s,--status&#x3D;&lt;int&gt;)"><a rel="nofollow" class="trm-toc-link" href="#指定的端口号上启用状态服务器-s-status"><span class="trm-toc-number">1.0.46.</span> <span class="trm-toc-text">指定的端口号上启用状态服务器( s,--status&#x3D;&lt;int&gt;)</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn hidden-md" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://npm.elemecdn.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.1.8"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.1.8"></script>
+
+</body>
+
+</html>
